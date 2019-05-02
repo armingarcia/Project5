@@ -264,8 +264,8 @@ public class GraphicalHammingDistanceFrame extends JFrame
 				}
 			});
 			
-			calculate.addActionListener((e) -> {
-				
+			calculateHD.addActionListener((e) -> {
+				//This action saves the count of the words
 				int[] hammingNodes = getHammingDistance();
 				distField0.setText(Integer.toString(hammingNodes[0]));
 				distField1.setText(Integer.toString(hammingNodes[1]));
@@ -273,5 +273,32 @@ public class GraphicalHammingDistanceFrame extends JFrame
 				distField3.setText(Integer.toString(hammingNodes[3]));
 				distField4.setText(Integer.toString(hammingNodes[4]));
 			});
-			}
+			
+			selectStation.addActionListener((e) -> {
+				String randomStation = generateRandomStation();
+				randomStationID.setText(randomStation);
+			});
+			
+			calculationButton.addActionListener((e) -> {
+				// Adds station to the station list
+				String stationID = randomStationID.getText();
+				if(stationID.length() == 4 && !dropDownContents.contains(stationID))
+				{
+					addNewItem(stationID);
+					stationField.setText("");
+				}
+				
+				dropDownBox.setSelectedItem(stationID);
+				
+				//Stores count of words in the text file
+				int[] hammingNodes = getHammingDistance();
+				distField0.setText(Integer.toString(hammingNodes[0]));
+				distField1.setText(Integer.toString(hammingNodes[1]));
+				distField2.setText(Integer.toString(hammingNodes[2]));
+				distField3.setText(Integer.toString(hammingNodes[3]));
+				distField4.setText(Integer.toString(hammingNodes[4]));
+			});
+			
+			
+			
 }
