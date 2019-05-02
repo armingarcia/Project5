@@ -320,4 +320,24 @@ public class GraphicalHammingDistanceFrame extends JFrame
 		
 		return results;
 	}
+		
+		public ArrayList<String> getStationList()
+		{
+			HammingDistance hd = new HammingDistance();
+			
+			int target = Integer.parseInt(hdField.getText());
+			String word = (String)dropDownBox.getSelectedItem();
+			ArrayList<String> stations = new ArrayList<String>();
+			
+			try {
+				stations = hd.getStationList(word, target);
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+			
+			return stations;
+		}
+		
 }
