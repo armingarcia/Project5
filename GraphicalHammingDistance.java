@@ -8,8 +8,14 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.io.BufferedReader;
 
-public class GraphicalHammingDistance extends JFrame {
+public class GraphicalHammingDistance extends JFrame
+
+public class HammingDistanceFrame extends JFrame implements  ChangeListener, ActionListener {
+	private static final int FRAME_WIDTH = 600;
+	private static final int FRAME_HEIGHT = 1800;
+	private ArrayList<String> Words=new ArrayList();{
 
 	JSlider slider;
 	JLabel label;
@@ -59,7 +65,39 @@ public class GraphicalHammingDistance extends JFrame {
 		JTextArea bigBox = new JTextArea();
 		bigBox.setSize(100, 100);
 		panel.add(bigBox, space);
+		add(panel);
 		
+		event cl = new event();
+		slider.addChangeListener(cl);		
+	}
+	public class event implements ChangeListener {
+		public void stateChanged (ChangeEvent cl) {
+			int value = slider.getValue();
+			label.setText("Enter Hamming Distance: " + value);
+		}
+	}
+	public static void main (String [] args) {
+		GraphicalHammingDistance test = new GraphicalHammingDistance();
+		test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		test.setSize(500, 500);
+		test.setVisible(true);
+		test.setTitle("Hamming Distance");
+	}
+
+
+	// Read
+	public void read(String fileName)throws IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader("Mesonet.txt"));
+		
+		String strg;
+		strg = br.readLine();
+		while(strg != null)
+		{ 
+		words.add(strg.substring(0,4));
+		strg = br.readLine();
+		System.out.println(strg);
+		}
+		br.close();
 	}
 }
-11
