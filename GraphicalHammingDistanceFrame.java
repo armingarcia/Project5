@@ -1,3 +1,6 @@
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -45,11 +48,11 @@ public class GraphicalHammingDistanceFrame extends JFrame
 	JLabel distanceLabel3 = new JLabel("Distance 3");
 	JLabel distanceLabel4 = new JLabel("Distance 4"); 
 	
-	JTextField distLabel0 = new JTextField();
-	JTextField distLabel1 = new JTextField();
-	JTextField distLabel2 = new JTextField();
-	JTextField distLabel3 = new JTextField();
-	JTextField distLabel4 = new JTextField();
+	JTextField distField0 = new JTextField();
+	JTextField distField1 = new JTextField();
+	JTextField distField2 = new JTextField();
+	JTextField distField3 = new JTextField();
+	JTextField distField4 = new JTextField();
 	
 	//--------------------------------------------------
 	// These are the components for the creative panel
@@ -58,8 +61,37 @@ public class GraphicalHammingDistanceFrame extends JFrame
 	JButton selectRandomStation = new JButton("Select Random Station");
 	JTextField randomStationID = new JTextField("",5);
 	JButton calculationButton = new JButton("Calculate");
-	GridBagConstraints layoutConst = null;
+	GridBagConstraints layoutSetUp = null;
 	
 	//---------------------------------------------------
+	public GraphicalHammingDistanceFrame() {
+		super("Hamming Distance Calculator");
+		this.setSize(FRAME_HEIGHT, FRAME_WIDTH);
+		this.setLayout(new GridLayout(2, 1));
+		
+		//Setting up of Original Panel
+		hdField.setEditable(false);
+		hdSlider.setMajorTickSpacing(1);
+		hdSlider.setPaintLabels(true);
+		hdSlider.setPaintTicks(true);
+		stationResults.setEditable(false);
+		stationResults.setColumns(10);
+		stationResults.setRows(10);
 	
+		// Components used to set up Original Panel Two
+		distField0.setEditable(false);
+		distField1.setEditable(false);
+		distField2.setEditable(false);
+		distField3.setEditable(false);
+		distField4.setEditable(false);
+		
+		originalPanelOne.setLayout(new GridBagLayout());
+		
+		// Filling out of "Enter Distance" Button
+		layoutSetUp = new GridBagConstraints();
+		layoutSetUp.gridx = 0;
+		layoutSetUp.gridy = 0;
+		originalPanelOne.add(distanceLabel0, layoutSetUp);
+		
+	}
 }
