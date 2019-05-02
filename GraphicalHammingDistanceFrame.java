@@ -89,9 +89,30 @@ public class GraphicalHammingDistanceFrame extends JFrame
 		
 		// Filling out of "Enter Distance" Button
 		layoutSetUp = new GridBagConstraints();
+		
 		layoutSetUp.gridx = 0;
 		layoutSetUp.gridy = 0;
 		originalPanelOne.add(distanceLabel0, layoutSetUp);
+		
+		layoutSetUp.gridx = 1;
+		layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
+		originalPanelOne.add(distField0, layoutSetUp);
+		
+		// "Show Station" Button and Field
+		layoutSetUp = new GridBagConstraints();
+		layoutSetUp.gridy = 2;
+		layoutSetUp.gridx = 2;
+		originalPanelOne.add(showStationButton, layoutSetUp);
+		
+		layoutSetUp.gridy = 3;
+		layoutSetUp.gridwidth = 2;
+		
+		// "Slider"
+		layoutSetUp = new GridBagConstraints();
+		layoutSetUp.gridx = 0;
+		layoutSetUp.gridy = 1;
+		layoutSetUp.gridwidth = 2;
+		originalPanelOne.add(hdSlider, layoutSetUp);
 		
 	}
 }
