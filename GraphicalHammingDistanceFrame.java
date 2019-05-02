@@ -3,8 +3,11 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,13 +21,14 @@ import javax.swing.JTextField;
 
 public class GraphicalHammingDistanceFrame extends JFrame
 {
-	private static final int FRAME_WIDTH = 600;
-	private static final int FRAME_HEIGHT = 1800;
-	
+	private static final int FRAME_WIDTH = 525;
+	private static final int FRAME_HEIGHT = 530;
+	private String fileName = "./Mesonet.txt";
 	JPanel originalPanel = new JPanel ();
 	JPanel originalPanelOne = new JPanel ();
 	JPanel originalPanelTwo = new JPanel();
 	JPanel creativePanel = new JPanel ();
+	
 	
 	JLabel hdLabel = new JLabel("Enter Hamming Dist:");
 	JTextField hdField = new JTextField("2");
@@ -36,7 +40,8 @@ public class GraphicalHammingDistanceFrame extends JFrame
 	//------------------------------------------------------
 	// This are the components used in original Panel Two
 	//------------------------------------------------------
-	JComboBox<String> dropDownBox = new JComboBox<String>();
+	JComboBox dropDownBox;
+	
 	ArrayList<String> dropDownContents = new ArrayList <String>();
 	
 	JLabel comparisonLabel = new JLabel("Compare with:");
@@ -57,22 +62,60 @@ public class GraphicalHammingDistanceFrame extends JFrame
 	JTextField distField3 = new JTextField();
 	JTextField distField4 = new JTextField();
 	
+
+	
 	//--------------------------------------------------
 	// These are the components for the creative panel
 	//--------------------------------------------------
 	
-	JButton selectStation = new JButton("Generate Station at Random");
+	JButton generateRandom = new JButton("Generate Station at Random");
 	JTextField randomStationID = new JTextField("",5);
 	JButton calculationButton = new JButton("Calculate");
 	GridBagConstraints layoutSetUp = null;
 	
+	public ArrayList<String> getAllStations() throws IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
+		
+		// As long as the file has more lines, ...
+		while(br.ready())
+		{
+			String str = br.readLine().substring(0, 4);
+			dropDownContents.add(str);
+		}
+		
+		br.close();
+		return dropDownContents;
+	}
+
+	
+	
 	//---------------------------------------------------
 	public GraphicalHammingDistanceFrame() {
 		super("Hamming Distance Calculator");
-		this.setSize(FRAME_HEIGHT, FRAME_WIDTH);
-		this.setLayout(new GridLayout(2, 1));
 		
-		//Setting up of Original Panel
+		this.setSize(FRAME_HEIGHT, FRAME_WIDTH);
+		this.setLayout(new GridLayout(0, 2));
+		int o = 0;
+		
+		try {
+			o = getAllStations().size();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String[] dc = new String[o];
+		for(int i = 0; i< dc.length; i++)
+			try {
+				dc[i] = getAllStations().get(i);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		dropDownBox = new JComboBox<String>(dc) ;
+		
+		//Setting up of Original Panel 
+
 		hdField.setEditable(false);
 		hdSlider.setMajorTickSpacing(1);
 		hdSlider.setPaintLabels(true);
@@ -92,14 +135,28 @@ public class GraphicalHammingDistanceFrame extends JFrame
 		
 		// Filling out of "Enter Distance" Button
 		layoutSetUp = new GridBagConstraints();
-		
+		layoutSetUp.weighty = 1;
 		layoutSetUp.gridx = 0;
 		layoutSetUp.gridy = 0;
-		originalPanelOne.add(distanceLabel0, layoutSetUp);
+		originalPanelOne.add(hdLabel, layoutSetUp);
+		
+		layoutSetUp = new GridBagConstraints();
+		layoutSetUp.weighty = 1;
+		layoutSetUp.gridx = 1;
+		layoutSetUp.gridy = 0;
+		originalPanelOne.add(hdField , layoutSetUp);
 		
 		layoutSetUp.gridx = 1;
 		layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
 		originalPanelOne.add(distField0, layoutSetUp);
+		
+		
+		// "Slider"
+		layoutSetUp = new GridBagConstraints();
+		layoutSetUp.gridx = 0;
+		layoutSetUp.gridy = 1;
+		layoutSetUp.gridwidth = 4;
+		originalPanelOne.add(hdSlider, layoutSetUp);
 		
 		// "Show Station" Button and Field
 		layoutSetUp = new GridBagConstraints();
@@ -111,14 +168,6 @@ public class GraphicalHammingDistanceFrame extends JFrame
 		layoutSetUp.gridwidth = 2;
 		layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
 		originalPanelOne.add(sp,layoutSetUp);
-		
-		// "Slider"
-		layoutSetUp = new GridBagConstraints();
-		layoutSetUp.gridx = 0;
-		layoutSetUp.gridy = 1;
-		layoutSetUp.gridwidth = 2;
-		originalPanelOne.add(hdSlider, layoutSetUp);
-		
 		//Original Panel Two Components
 		originalPanelTwo.setLayout(new GridBagLayout());
 		
@@ -147,6 +196,7 @@ public class GraphicalHammingDistanceFrame extends JFrame
 			originalPanelTwo.add(distanceLabel0, layoutSetUp);
 			
 			layoutSetUp.gridx = 1;
+			//layoutSetUp.gridy = 1;
 			layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
 			originalPanelTwo.add(distField0, layoutSetUp);
 			
@@ -155,6 +205,7 @@ public class GraphicalHammingDistanceFrame extends JFrame
 			layoutSetUp.gridy = 3;
 			originalPanelTwo.add(distanceLabel1, layoutSetUp);
 			
+			layoutSetUp = new GridBagConstraints();
 			layoutSetUp.gridx = 1;
 			layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
 			originalPanelTwo.add(distField1, layoutSetUp);
@@ -162,7 +213,7 @@ public class GraphicalHammingDistanceFrame extends JFrame
 			layoutSetUp = new GridBagConstraints();
 			layoutSetUp.gridx = 0;
 			layoutSetUp.gridy = 4;
-			originalPanelTwo.add(distanceLabel1, layoutSetUp);
+			originalPanelTwo.add(distanceLabel2, layoutSetUp);
 			
 			layoutSetUp.gridx = 1;
 			layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
@@ -204,7 +255,7 @@ public class GraphicalHammingDistanceFrame extends JFrame
 			layoutSetUp.gridx = 0;
 			layoutSetUp.gridy = 0;
 			layoutSetUp.fill = GridBagConstraints.CENTER;
-			creativePanel.add(selectStation, layoutSetUp);
+			creativePanel.add(generateRandom, layoutSetUp);
 			
 			randomStationID.setEditable(false);
 			layoutSetUp.gridx = 1;
@@ -238,7 +289,7 @@ public class GraphicalHammingDistanceFrame extends JFrame
 			// This permits to drag the slider
 			hdSlider.addChangeListener((l) -> {
 				int value = hdSlider.getValue();
-				distField0.setText(Integer.toString(value));
+				hdField .setText(Integer.toString(value));
 	});
 			//This generates a list of Station ID's with a specific hamming distance
 			showStationButton.addActionListener((e) -> {
@@ -275,7 +326,7 @@ public class GraphicalHammingDistanceFrame extends JFrame
 				distField4.setText(Integer.toString(hammingNodes[4]));
 			});
 			
-			selectStation.addActionListener((e) -> {
+			generateRandom.addActionListener((e) -> {
 				String randomStation = generateRandomStation();
 				randomStationID.setText(randomStation);
 			});
@@ -320,7 +371,7 @@ public class GraphicalHammingDistanceFrame extends JFrame
 		
 		return results;
 	}
-		
+		//This generates a list of station IDs by creating a HammingDistance object by selecting words from JComboBox
 		public ArrayList<String> getStationList()
 		{
 			HammingDistance hd = new HammingDistance();
@@ -340,4 +391,41 @@ public class GraphicalHammingDistanceFrame extends JFrame
 			return stations;
 		}
 		
+		//This will add a new StationID to the list held in the JComboBox
+		public void addNewItem(String stationID)
+		{
+			dropDownContents.add(stationID);
+			Collections.sort(dropDownContents);
+			dropDownBox.removeAllItems();
+			
+			for(String station: dropDownContents)
+			{
+				dropDownBox.addItem(station);
+			}
+		}
+		public String generateRandomStation()
+		{
+			SelectedStation random = new SelectedStation();
+			return random.provideSelectedStation();
+		}
+		private void setupDropDownBox()
+		{
+			HammingDistance hd = new HammingDistance();
+
+			// Attempts to read-in stations from a file
+			try {
+				dropDownContents = hd.getAllStations();
+				
+				for (String station : dropDownContents)
+				{
+					dropDownBox.addItem(station);
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		public static void main(String[] args) {
+			new GraphicalHammingDistanceFrame();
+		}
 }
