@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -299,6 +300,24 @@ public class GraphicalHammingDistanceFrame extends JFrame
 				distField4.setText(Integer.toString(hammingNodes[4]));
 			});
 			
-			
-			
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        this.setVisible(true);
+		}
+		
+		//Used to generate an int array of the number of stations in the list
+		public int[] getHammingDistance()
+		{
+		HammingDistance hd = new HammingDistance();
+		String activeStation = (String)dropDownBox.getSelectedItem();
+		int[] results = new int[5];
+		try {
+			results = hd.checkAgainstAllWords(activeStation);
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		
+		return results;
+	}
 }
