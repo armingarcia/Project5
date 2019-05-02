@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -58,7 +60,7 @@ public class GraphicalHammingDistanceFrame extends JFrame
 	// These are the components for the creative panel
 	//--------------------------------------------------
 	
-	JButton selectRandomStation = new JButton("Select Random Station");
+	JButton selectStation = new JButton("Generate Station at Random");
 	JTextField randomStationID = new JTextField("",5);
 	JButton calculationButton = new JButton("Calculate");
 	GridBagConstraints layoutSetUp = null;
@@ -106,6 +108,8 @@ public class GraphicalHammingDistanceFrame extends JFrame
 		
 		layoutSetUp.gridy = 3;
 		layoutSetUp.gridwidth = 2;
+		layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
+		originalPanelOne.add(sp,layoutSetUp);
 		
 		// "Slider"
 		layoutSetUp = new GridBagConstraints();
@@ -114,5 +118,160 @@ public class GraphicalHammingDistanceFrame extends JFrame
 		layoutSetUp.gridwidth = 2;
 		originalPanelOne.add(hdSlider, layoutSetUp);
 		
-	}
+		//Original Panel Two Components
+		originalPanelTwo.setLayout(new GridBagLayout());
+		
+		// Calculate and Compare Button & Drop-Down Box
+		layoutSetUp = new GridBagConstraints();
+		layoutSetUp.anchor = GridBagConstraints.LINE_START;
+			
+			layoutSetUp.gridx = 0;
+			layoutSetUp.gridy = 0;
+			originalPanelTwo.add(comparisonLabel, layoutSetUp);
+		
+
+			layoutSetUp = new GridBagConstraints();
+			setupDropDownBox();
+			layoutSetUp.gridx = 1;
+			layoutSetUp.gridy = 0;
+			originalPanelTwo.add(dropDownBox, layoutSetUp);
+			
+			layoutSetUp.gridx = 0;
+			layoutSetUp.gridy = 1;
+			originalPanelTwo.add(calculateHD, layoutSetUp);
+			
+			// Distance labels and fields
+			layoutSetUp.gridx = 0;
+			layoutSetUp.gridy = 2;
+			originalPanelTwo.add(distanceLabel0, layoutSetUp);
+			
+			layoutSetUp.gridx = 1;
+			layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
+			originalPanelTwo.add(distField0, layoutSetUp);
+			
+			layoutSetUp = new GridBagConstraints();
+			layoutSetUp.gridx = 0;
+			layoutSetUp.gridy = 3;
+			originalPanelTwo.add(distanceLabel1, layoutSetUp);
+			
+			layoutSetUp.gridx = 1;
+			layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
+			originalPanelTwo.add(distField1, layoutSetUp);
+			
+			layoutSetUp = new GridBagConstraints();
+			layoutSetUp.gridx = 0;
+			layoutSetUp.gridy = 4;
+			originalPanelTwo.add(distanceLabel1, layoutSetUp);
+			
+			layoutSetUp.gridx = 1;
+			layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
+			originalPanelTwo.add(distField2, layoutSetUp);
+			
+			layoutSetUp = new GridBagConstraints();
+			layoutSetUp.gridx = 0;
+			layoutSetUp.gridy = 5;
+			originalPanelTwo.add(distanceLabel3, layoutSetUp);
+			
+			layoutSetUp.gridx = 1;
+			layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
+			originalPanelTwo.add(distField3, layoutSetUp);
+			
+			layoutSetUp = new GridBagConstraints();
+			layoutSetUp.gridx = 0;
+			layoutSetUp.gridy = 6;
+			originalPanelTwo.add(distanceLabel4, layoutSetUp);
+			
+			layoutSetUp.gridx = 1;
+			layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
+			originalPanelTwo.add(distField4, layoutSetUp);
+			
+			// Add station button and field
+			layoutSetUp = new GridBagConstraints();
+			layoutSetUp.gridx = 0;
+			layoutSetUp.gridy = 7;
+			originalPanelTwo.add(addStation, layoutSetUp);
+			
+			layoutSetUp.gridx = 1;
+			layoutSetUp.fill = GridBagConstraints.HORIZONTAL;
+			originalPanelTwo.add(stationField, layoutSetUp);
+			
+			// Creative Panel components
+			creativePanel.setLayout(new GridBagLayout());
+			
+			// "Generate random" button, random station ID field, and "Add & Calculate" button
+			layoutSetUp = new GridBagConstraints();
+			layoutSetUp.gridx = 0;
+			layoutSetUp.gridy = 0;
+			layoutSetUp.fill = GridBagConstraints.CENTER;
+			creativePanel.add(selectStation, layoutSetUp);
+			
+			randomStationID.setEditable(false);
+			layoutSetUp.gridx = 1;
+			layoutSetUp.fill = GridBagConstraints.CENTER;
+			creativePanel.add(randomStationID, layoutSetUp);
+			
+			calculationButton.setBackground(Color.PINK);
+			layoutSetUp.gridx = 0;
+			layoutSetUp.gridy = 2;
+			layoutSetUp.gridwidth = 2;
+			creativePanel.add(calculationButton, layoutSetUp);
+			
+			// Child panels added to Parent Panel
+			originalPanel.setLayout(new GridBagLayout());
+	        originalPanel.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+			
+	        layoutSetUp = new GridBagConstraints();
+	        layoutSetUp.fill = GridBagConstraints.VERTICAL;
+	        layoutSetUp.gridx = 0;
+	        layoutSetUp.gridy = 0;
+			
+			originalPanel.add(originalPanelOne, layoutSetUp);
+			
+			layoutSetUp.gridy = 1;
+			originalPanel.add(originalPanelTwo, layoutSetUp);
+			
+			// Panels added to frame
+			this.add(originalPanel);
+			this.add(creativePanel);
+			
+			// This permits to drag the slider
+			hdSlider.addChangeListener((l) -> {
+				int value = hdSlider.getValue();
+				distField0.setText(Integer.toString(value));
+	});
+			//This generates a list of Station ID's with a specific hamming distance
+			showStationButton.addActionListener((e) -> {
+				
+				ArrayList<String> stations = getStationList();
+		
+				String toPrint = "";
+				for(int i = 0; i < stations.size(); ++i)
+				{
+					toPrint += stations.get(i) + "\n";
+				}
+				stationResults.setText(toPrint);
+				
+				// Starts the scroll bar at the top
+				stationResults.setCaretPosition(0);
+			});
+			
+			addStation.addActionListener((e) -> {
+				String stationID = stationField.getText();
+				if(stationID.length() == 4 && !dropDownContents.contains(stationID))
+				{
+					addNewItem(stationID);
+					stationField.setText("");
+				}
+			});
+			
+			calculate.addActionListener((e) -> {
+				
+				int[] hammingNodes = getHammingDistance();
+				distField0.setText(Integer.toString(hammingNodes[0]));
+				distField1.setText(Integer.toString(hammingNodes[1]));
+				distField2.setText(Integer.toString(hammingNodes[2]));
+				distField3.setText(Integer.toString(hammingNodes[3]));
+				distField4.setText(Integer.toString(hammingNodes[4]));
+			});
+			}
 }
