@@ -62,3 +62,4 @@ public class GraphicalHammingDistance extends JFrame {
 		
 	}
 }
+11
