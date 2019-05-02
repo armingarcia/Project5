@@ -13,4 +13,10 @@ public class GraphicalHammingDistanceFrame extends JFrame
 	JTextField hdField = new JTextField("2");
 	JSlider hdSlider = new JSlider(1, 4, 2);
 	JButton showStationButton = new JButton("Show Station");
-}
+	JTextArea stationResults = new JTextArea();
+	JScrollPane sp = new JScrollPane(stationResults);
+	
+	// This are the components used in original Panel Two
+	
+	JLabel comparisonLabel = new JLabel("Compare with:")
+}df
