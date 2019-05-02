@@ -1,5 +1,7 @@
 # Project5
 
+![](./UML.png?raw=true)
+
 There are 3 classes that I have made for this project which consist of the following:
     1. GraphicalHammingDistanceFrame.java
     2. Hamming Distance.java
